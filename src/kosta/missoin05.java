@@ -17,7 +17,5 @@ public class missoin05 {
 				System.out.println(i);
 			}
 		}
-
 	}
-
 }
