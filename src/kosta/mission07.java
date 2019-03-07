@@ -24,73 +24,78 @@ public class mission07 {
 				}
 			}
 			
-			//배열 검색
-			public static void search(String[] arr,Scanner sc) {
+			//배열 검색 int return 형
+			public static int search_int(String[] arr,String str) {
 				boolean check = false;
-				String str = sc.nextLine();
+				int searched =0;
+
 				for(int i=0; i<count; i++) {
 					if(arr[i].equals(str)) {
-						System.out.println(str + "은 "+i+"번째 위치해 있습니다.");
 						check = true;
+						searched = i;
 						break;
 					}
 					else {
 						continue;
 					}
 				}
+				
 				if(check == false) {
+					searched = -1;
+				}
+				
+				return searched;	
+			}
+			
+			//search를 활용한 update함수
+			public static void update_2(String[] arr,Scanner sc) {
+				String fruit;
+				String fruit2;
+				
+				System.out.print("바꾸실 과일을 입력해 주세요 :");
+				fruit = sc.nextLine();
+				
+				System.out.print("새 과일을 입력해 주세요 :");
+				fruit2 = sc.nextLine();
+				
+				if(search_int(arr, fruit) == -1) {
 					System.out.println("해당 과일이 없습니다.");
 				}
-			}
-			
-			//배열 수정
-			public static void update(String[] arr,Scanner sc) {
-				boolean check = false;
-				//Scanner sc = new Scanner(System.in);
-				System.out.print("바뀔 과일을 입력해 주세요 :");
-				String str = sc.nextLine();
-				System.out.print("새로 바꾸실 과일을 입력해 주세요.");
-				String str2 = sc.nextLine();
-				for(int i=0; i<count; i++) {
-					if(arr[i].equals(str)) {
-						arr[i] = str2;
-						System.out.println("수정되었습니다.");
-						check = true;
-						break;
-					}
-					else {
-						continue;	
+				else {
+					for(int i=0; i<count; i++) {
+						if(search_int(arr, fruit) != -1) {
+							arr[search_int(arr, fruit)] = fruit2;
+		                    System.out.println("수정 되었습니다.");				
+							break;
+						}
+						else {
+							continue;	
+						}
 					}
 				}
-				if(check == false) {
-					System.out.println("바뀔 과일이 없습니다.");
-				}			
 			}
 			
-			//배열 삭제
-			public static void delete(String[] arr,Scanner sc) {
-				boolean check = false;
-				int j =0;
+		
+			//search 활요한 delete!..
+			public static void delete_2(String[] arr,Scanner sc) {
 				System.out.print("삭제할 과일 입력 : ");
-				String str = sc.nextLine();
-				for(int i=0; i< count; i++) {
-					if(arr[i].equals(str)) {
-						check = true;
-						System.out.println("삭제되었습니다.");
-						j = i;
-						break;
-					}
-					else {
-						continue;
-					}
+				
+				String fruit_delete = sc.nextLine();
+				
+				if(search_int(arr,fruit_delete) == -1) {
+					System.out.println("해당 과일이 없습니다.");
 				}
-				if(check == false) {
-					System.out.println("해당 과일이 없습니다.");	
+				
+				else {
+					System.out.println("삭제되었습니다.");
+					reduceArray(arr,search_int(arr,fruit_delete));
 				}
-				for(int i=j; i<count; i++) {
-					if(i < count-1) {
+			}
+			
+			//지정된 위치로 이후에 있는 배열의 원소를 한칸씩 당겨온다. => 출력되는 배열이 크기가 줄어든다! 실제로는 마지막값은 남아있음...
+			public static void reduceArray(String[] arr, int deleted_index) {
+				for(int i= deleted_index; i<count-1; i++) {
 						arr[i] = arr[i+1];
-					}
 				}
 				count--;
 			}
@@ -105,6 +110,9 @@ public class mission07 {
 	public static void main(String[] args) {
 		//과일을 넣을수 있고, 수정도 할수있고, 추가도 할수있고, 그리고 삭제도 할수 있음!
 		String[] arr = new String[3];
+		
+		String fruit = "";
+		
 		for(String s : arr) {
 			s = "";
 		}
@@ -125,13 +133,25 @@ public class mission07 {
 				print(arr);
 				break;
 			case "3":
-				search(arr,sc);
+				System.out.print("검색할 과일을 입력하세요 : "); //함수는 int만 반환해줌
+				fruit = sc.nextLine();
+				if(search_int(arr,fruit) == -1) {
+					System.out.println("해당 과일이 없습니다.");		
+				}
+				
+				else {
+					System.out.println(search_int(arr,fruit)+ "번째 위치해 있습니다.");
+				}
 				break;
+				/*search(arr,sc); //함수에서 다 처리하기
+				break;*/
 			case "4" :
-				update(arr,sc);
+				//update(arr,sc); //search 활용 x
+				update_2(arr, sc); //search_int 함수 활용!
 				break;
 			case "5" :
-				delete(arr,sc);
+				//delete(arr,sc);
+				delete_2(arr,sc);
 				break;	
 			case "6" :
 				exit();
