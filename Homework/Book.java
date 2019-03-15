@@ -45,7 +45,8 @@ public class Book {
 	}
 	
 	public void show() {
-		System.out.println(this.name +"교재의 정가는 " + this.price +"원   할인가격은 " + getDiscounted(this.price , this.getDiscounting(this.price)));
+		System.out.println(this.name +"교재의 정가는 " + this.price +"원   할인된 가격은 " + getDiscounted(this.price , this.getDiscounting(this.price)));
 	}
+	
 	
 }
